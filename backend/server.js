@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
+
 import errorHandler from "./middlewares/errorHandler.js";
+import listingRoutes from "./routes/listingRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -33,6 +35,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("API is working"));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/listings", listingRoutes);
 
 app.use((req, res, next) => {
   res.status(404);
