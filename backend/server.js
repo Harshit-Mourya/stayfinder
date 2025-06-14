@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 
 import errorHandler from "./middlewares/errorHandler.js";
 import listingRoutes from "./routes/listingRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ app.get("/", (req, res) => res.send("API is working"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.use((req, res, next) => {
   res.status(404);
