@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ["http://localhost:5173", "https://hoppscotch.io"];
+const allowedOrigins = ["https://hoppscotch.io", "http://localhost:5173"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -29,7 +29,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => res.send("API is working"));

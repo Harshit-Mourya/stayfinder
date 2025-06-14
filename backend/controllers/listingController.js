@@ -53,3 +53,13 @@ export const getListingById = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getHostListings = async (req, res, next) => {
+  try {
+    const hostId = req.user.id;
+    const listings = await Listing.find({ host: hostId });
+    res.status(200).json(listings);
+  } catch (err) {
+    next(err);
+  }
+};
