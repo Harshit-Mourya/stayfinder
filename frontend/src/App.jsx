@@ -7,6 +7,8 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import CreateListing from "./pages/CreateListings";
+
 import PrivateRoute from "./components/PrivateRoute";
 
 import useAutoLogin from "./hooks/useAutoLogin";
@@ -18,6 +20,14 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route
+        path="/create-listing"
+        element={
+          <PrivateRoute>
+            <CreateListing />
+          </PrivateRoute>
+        }
+      />
 
       <Route
         path="/dashboard"

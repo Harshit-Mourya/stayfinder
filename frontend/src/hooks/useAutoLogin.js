@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setUser, logout } from "../store/slices/authSlice";
+import { logout } from "../slices/authSlice";
 import axiosInstance from "../utils/axiosInstance";
 
 const useAutoLogin = () => {

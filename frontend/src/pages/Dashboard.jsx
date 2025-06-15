@@ -20,7 +20,12 @@ const Dashboard = () => {
         <ul>
           {listings.map((listing) => (
             <li key={listing._id}>
-              <strong>{listing.title}</strong> — ₹{listing.price}
+              <h4>{listing.title}</h4>
+              <p>{listing.description}</p>
+
+              <p>{listing.location}</p>
+              <p>Price: ₹{listing.price}</p>
+              <img src={listing.images[0]} alt={listing.title} />
             </li>
           ))}
         </ul>

@@ -1,36 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../slices/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      const res = await axiosInstance.post("/auth/login", { email, password });
-
-      const { user, token } = res.data;
-      localStorage.setItem("token", token);
-      dispatch(setUser(user));
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(
-        "Login failed:",
-        err.response?.data?.message || err.message
-      );
-      setError(err.response?.data?.message || "Login failed");
-    }
+    dispatch(loginUser({ email, password }));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="login-container">
@@ -52,7 +45,9 @@ const Login = () => {
           required
         />
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
 
         {error && <p className="error">{error}</p>}
       </form>
