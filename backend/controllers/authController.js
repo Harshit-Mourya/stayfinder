@@ -86,3 +86,14 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error!" });
   }
 };
+
+export const autoLogin = async (req, res) => {
+  try {
+    const user = req.user;
+    console.log("autoLogin: ", user);
+
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch user!" });
+  }
+};

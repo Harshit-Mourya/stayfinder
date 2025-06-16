@@ -1,28 +1,24 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logout } from "../slices/authSlice";
-import axiosInstance from "../utils/axiosInstance";
+import { fetchCurrentUser } from "../slices/authSlice"; // path as per your project
+import { setInitialized } from "../slices/authSlice";
 
 const useAutoLogin = () => {
+  console.log("inside auotologin");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+    const token = localStorage.getItem("token");
 
-      try {
-        const res = await axiosInstance.get("/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch(setUser(res.data.user));
-      } catch (err) {
-        console.error("Auto-login failed!");
-        dispatch(logout());
-      }
-    };
+    console.log("inside autologin: ", token);
 
-    checkAuth();
+    if (token) {
+      // axiosInstance should already include token in headers
+      dispatch(fetchCurrentUser()).finally(() => dispatch(setInitialized()));
+    } else {
+      dispatch(setInitialized()); // still mark as initialized if no token
+    }
   }, [dispatch]);
 };
 

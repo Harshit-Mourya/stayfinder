@@ -13,11 +13,35 @@ export const fetchListings = createAsyncThunk(
   }
 );
 
+export const createListing = createAsyncThunk(
+  "listings/createListing",
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post("/listings", {
+        ...formData,
+        price: Number(formData.price),
+        availableDates: formData.availableDates
+          .split(",")
+          .map((date) => new Date(date.trim())),
+        images: Array.isArray(formData.images)
+          ? formData.images
+          : [formData.images],
+      });
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to create listing"
+      );
+    }
+  }
+);
+
 const listingSlice = createSlice({
   name: "listings",
   initialState: {
     listings: [],
     loading: false,
+    status: "idle",
     error: null,
   },
   extraReducers: (builder) => {
@@ -32,6 +56,17 @@ const listingSlice = createSlice({
       })
       .addCase(fetchListings.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createListing.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createListing.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.listings.push(action.payload);
+      })
+      .addCase(createListing.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.payload;
       });
   },

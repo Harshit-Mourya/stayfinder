@@ -1,16 +1,21 @@
 import { useSelector } from "react-redux";
 import useFetchHostListings from "../hooks/useFetchHostListings";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user);
   const { listings, loading, error } = useFetchHostListings();
+
+  useEffect(() => {
+    console.log("User role:", user?.role);
+  }, [user]);
 
   if (!user || loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="dashboard-container">
-      <h2>Welcome, {user.username || user.name || "Host"} 👋</h2>
+      <h2>Welcome, {user.name || "Host"} 👋</h2>
       <p>Email: {user.email}</p>
       <p>Host ID: {user._id}</p>
       <h3>Your Listings</h3>

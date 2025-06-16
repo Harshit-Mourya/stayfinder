@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, error, isAuthenticated } = useSelector(
+  const { loading, error, isAuthenticated, user } = useSelector(
     (state) => state.auth
   );
 
@@ -20,10 +20,13 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    console.log("isAuthenticated in Login.jsx:", isAuthenticated);
+    console.log("user in Login.jsx: ", user);
+
+    if (user) {
       navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated]);
 
   return (
     <div className="login-container">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { Navigate } from "react-router-dom";
 
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -18,10 +19,12 @@ function App() {
 
   return (
     <Routes>
+      <Route path="*" element={<Navigate to="/" />} />
+
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route
-        path="/create-listing"
+        path="/createlisting"
         element={
           <PrivateRoute>
             <CreateListing />

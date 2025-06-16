@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { createListing } from "../slices/listingSlice";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +17,8 @@ const CreateListing = () => {
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { status, error: createError } = useSelector((state) => state.listings);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,20 +29,12 @@ const CreateListing = () => {
     e.preventDefault();
     setError("");
 
-    try {
-      const res = await axiosInstance.post("/listings", {
-        ...formData,
-        price: Number(formData.price),
-        availableDates: formData.availableDates
-          .split(",")
-          .map((date) => new Date(date.trim())),
-      });
+    const resultAction = await dispatch(createListing(formData));
 
-      console.log("Created listing:", res.data);
+    if (createListing.fulfilled.match(resultAction)) {
       navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.message || "Failed to create listing");
+    } else {
+      setError(resultAction.payload || "Failed to create listing");
     }
   };
 
