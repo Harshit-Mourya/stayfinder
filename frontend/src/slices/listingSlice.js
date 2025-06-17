@@ -6,6 +6,7 @@ export const fetchListings = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axiosInstance.get("/listings");
+
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue("Failed to fetch listings");
