@@ -20,9 +20,7 @@ export const createListing = createAsyncThunk(
       const response = await axiosInstance.post("/listings", {
         ...formData,
         price: Number(formData.price),
-        availableDates: formData.availableDates
-          .split(",")
-          .map((date) => new Date(date.trim())),
+
         images: Array.isArray(formData.images)
           ? formData.images
           : [formData.images],
@@ -36,10 +34,24 @@ export const createListing = createAsyncThunk(
   }
 );
 
+export const fetchListingById = createAsyncThunk(
+  "listings/fetchById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`/listings/${id}`);
+      return res.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Failed to fetch listing");
+    }
+  }
+);
+
 const listingSlice = createSlice({
   name: "listings",
   initialState: {
     listings: [],
+    selectedListing: null,
+
     loading: false,
     status: "idle",
     error: null,
@@ -58,6 +70,19 @@ const listingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(fetchListingById.pending, (state) => {
+        state.loading = true;
+        state.selectedListing = null;
+      })
+      .addCase(fetchListingById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedListing = action.payload;
+      })
+      .addCase(fetchListingById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       .addCase(createListing.pending, (state) => {
         state.status = "loading";
       })

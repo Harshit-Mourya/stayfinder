@@ -90,7 +90,7 @@ export const loginUser = async (req, res) => {
 export const autoLogin = async (req, res) => {
   try {
     const user = req.user;
-    console.log("autoLogin: ", user);
+    console.log("autoLogin backend");
 
     res.json({ user });
   } catch (err) {

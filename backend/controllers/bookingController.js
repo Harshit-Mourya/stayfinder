@@ -6,6 +6,12 @@ export const createBooking = async (req, res, next) => {
   try {
     const { listing, checkIn, checkOut, totalPrice } = req.body;
 
+    if (new Date(checkOut) <= new Date(checkIn)) {
+      return res
+        .status(400)
+        .json({ message: "Check-out must be after check-in." });
+    }
+
     const newBooking = new Booking({
       user: req.user.id,
       listing,

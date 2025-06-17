@@ -9,19 +9,17 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CreateListing from "./pages/CreateListings";
-
+import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
-
-import useAutoLogin from "./hooks/useAutoLogin";
+import BookingForm from "./pages/BookingForm";
 
 function App() {
-  useAutoLogin();
-
   return (
     <Routes>
       <Route path="*" element={<Navigate to="/" />} />
 
       <Route path="/" element={<Home />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/createlisting"
@@ -31,7 +29,14 @@ function App() {
           </PrivateRoute>
         }
       />
-
+      <Route
+        path="/book/:id"
+        element={
+          <PrivateRoute>
+            <BookingForm />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/dashboard"
         element={

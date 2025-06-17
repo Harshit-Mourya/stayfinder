@@ -8,7 +8,6 @@ const listingSchema = new mongoose.Schema(
     location: String,
     images: [String],
     host: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    availableDates: [Date],
   },
   { timestamps: true }
 );

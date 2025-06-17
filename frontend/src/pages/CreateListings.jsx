@@ -12,7 +12,6 @@ const CreateListing = () => {
     price: "",
     location: "",
     images: [""],
-    availableDates: [],
   });
 
   const [error, setError] = useState("");
@@ -71,12 +70,6 @@ const CreateListing = () => {
           type="text"
           name="images"
           placeholder="Image URL"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="availableDates"
-          placeholder="Available Dates (comma-separated)"
           onChange={handleChange}
         />
 

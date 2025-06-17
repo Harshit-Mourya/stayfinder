@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import useFetchHostListings from "../hooks/useFetchHostListings";
 import { useEffect } from "react";
+import ListingCard from "../components/ListingCard.jsx";
 
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user);
@@ -24,14 +25,7 @@ const Dashboard = () => {
       ) : (
         <ul>
           {listings.map((listing) => (
-            <li key={listing._id}>
-              <h4>{listing.title}</h4>
-              <p>{listing.description}</p>
-
-              <p>{listing.location}</p>
-              <p>Price: ₹{listing.price}</p>
-              <img src={listing.images[0]} alt={listing.title} />
-            </li>
+            <ListingCard key={listing._id} listing={listing} />
           ))}
         </ul>
       )}
