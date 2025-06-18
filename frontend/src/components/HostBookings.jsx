@@ -1,8 +1,16 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHostBookings } from "../slices/bookingSlice";
 
 const HostBookings = () => {
-  const { bookings } = useSelector((state) => state.bookings);
+  const dispatch = useDispatch();
+
+  const { bookings, loading, error } = useSelector((state) => state.bookings);
   const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchHostBookings());
+  }, [dispatch]);
 
   const hostBookings = bookings.filter(
     (booking) => booking.listing?.host === user?._id

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBooking } from "../slices/bookingSlice";
 import { fetchListingById } from "../slices/listingSlice";
@@ -17,7 +17,7 @@ const BookingForm = () => {
   const [checkOut, setCheckOut] = useState("");
   const totalPrice = useTotalPrice(checkIn, checkOut, listing?.price);
 
-  const { status, error } = useSelector((state) => state.bookings);
+  const { loading, error } = useSelector((state) => state.bookings);
 
   useEffect(() => {
     dispatch(fetchListingById(listingId));
@@ -25,6 +25,11 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (new Date(checkIn) >= new Date(checkOut)) {
+      alert("Check-out date must be after check-in date!");
+      return;
+    }
 
     const resultAction = await dispatch(
       createBooking({ listing: listingId, checkIn, checkOut, totalPrice })
@@ -40,14 +45,30 @@ const BookingForm = () => {
   return (
     <div className="booking-form">
       <h2>Book This Listing</h2>
+
+      {listing && (
+        <div className="listing-preview">
+          <h3>{listing.title}</h3>
+          <img
+            src={listing.images?.[0]}
+            alt={listing.title}
+            style={{ width: "300px", objectFit: "cover", borderRadius: "8px" }}
+          />
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
+        <label htmlFor="checkin">Check-in Date:</label>
         <input
+          id="checkin"
           type="date"
           value={checkIn}
           onChange={(e) => setCheckIn(e.target.value)}
           required
         />
+        <label htmlFor="checkout">Check-out Date:</label>
         <input
+          id="checkout"
           type="date"
           value={checkOut}
           onChange={(e) => setCheckOut(e.target.value)}
@@ -55,8 +76,8 @@ const BookingForm = () => {
         />
         <p>Total Price: ₹{totalPrice}</p>
 
-        <button type="submit" disabled={status === "loading"}>
-          {status === "loading" ? "Booking..." : "Book Now"}
+        <button type="submit" disabled={loading}>
+          {loading ? "Booking..." : "Book Now"}
         </button>
         {error && <p className="error">{error}</p>}
       </form>

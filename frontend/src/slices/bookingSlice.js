@@ -6,7 +6,11 @@ export const createBooking = createAsyncThunk(
   "bookings/createBooking",
   async (bookingData, thunkAPI) => {
     try {
+      console.log(bookingData);
+
       const res = await axiosInstance.post("/bookings", bookingData);
+      console.log(res.data);
+
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -22,6 +26,7 @@ export const fetchUserBookings = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axiosInstance.get("/bookings/user");
+
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue("Failed to fetch user bookings");
@@ -29,7 +34,7 @@ export const fetchUserBookings = createAsyncThunk(
   }
 );
 
-// Get bookings for the host
+// Get bookings for listings owned by the host
 export const fetchHostBookings = createAsyncThunk(
   "bookings/fetchHostBookings",
   async (_, thunkAPI) => {

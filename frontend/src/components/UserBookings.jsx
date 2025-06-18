@@ -1,15 +1,25 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserBookings } from "../slices/bookingSlice";
 
 const UserBookings = () => {
-  const { bookings } = useSelector((state) => state.bookings);
+  const dispatch = useDispatch();
+  const { bookings, loading, error } = useSelector((state) => state.bookings);
   const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchUserBookings());
+  }, [dispatch]);
 
   const userBookings = bookings.filter((booking) => booking.user === user?._id);
 
   return (
     <div>
       <h2>Your Bookings</h2>
-      {userBookings.length === 0 ? (
+      {loading && <p>Loading bookings...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {!loading && userBookings.length === 0 ? (
         <p>You haven't made any bookings yet.</p>
       ) : (
         <ul>

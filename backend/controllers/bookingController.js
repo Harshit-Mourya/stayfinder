@@ -21,6 +21,12 @@ export const createBooking = async (req, res, next) => {
     });
 
     await newBooking.save();
+    await newBooking.populate([
+      { path: "listing", select: "title images price host" },
+    ]);
+
+    console.log("newBooking: ", newBooking);
+
     res.status(201).json(newBooking);
   } catch (error) {
     next(error);
@@ -30,9 +36,10 @@ export const createBooking = async (req, res, next) => {
 // GET /api/bookings/user - Get bookings by logged-in user
 export const getUserBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id }).populate(
-      "listing"
-    );
+    const bookings = await Booking.find({ user: req.user.id }).populate({
+      path: "listing",
+      select: "host title images price",
+    });
     res.status(200).json(bookings);
   } catch (error) {
     next(error);
@@ -45,9 +52,19 @@ export const getHostBookings = async (req, res, next) => {
     const listings = await Listing.find({ host: req.user.id });
     const listingIds = listings.map((listing) => listing._id);
 
+    if (listingIds.length === 0) {
+      return res.status(200).json([]);
+    }
+
     const bookings = await Booking.find({
       listing: { $in: listingIds },
-    }).populate("user listing");
+    })
+      .populate([
+        { path: "user", select: "name email" },
+        { path: "listing", select: "title images price host" },
+      ])
+      .sort({ createdAt: -1 });
+
     res.status(200).json(bookings);
   } catch (error) {
     next(error);

@@ -12,6 +12,7 @@ import CreateListing from "./pages/CreateListings";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import BookingForm from "./pages/BookingForm";
+import ListingDetails from "./pages/ListingDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/listing/:id" element={<ListingDetails />} />
       <Route
         path="/createlisting"
         element={
