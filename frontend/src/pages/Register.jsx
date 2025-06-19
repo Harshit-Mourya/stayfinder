@@ -34,72 +34,82 @@ const Register = () => {
   };
 
   return (
-    <div className="register-page p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          required
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
+    <div className="flex justify-center items-center min-h-[80vh] px-4">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          Register on StayFinder
+        </h2>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
-        <div className="flex gap-4 items-center">
-          <label className="font-medium">Role:</label>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="user"
-              checked={formData.role === "user"}
-              onChange={handleChange}
-            />
-            User
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="host"
-              checked={formData.role === "host"}
-              onChange={handleChange}
-            />
-            Host
-          </label>
-        </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Register
-        </button>
+          <div className="flex items-center gap-4">
+            <label className="font-medium text-gray-700 whitespace-nowrap">
+              Select Role:
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="user"
+                checked={formData.role === "user"}
+                onChange={handleChange}
+                required
+              />
+              User
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="host"
+                checked={formData.role === "host"}
+                onChange={handleChange}
+              />
+              Host
+            </label>
+          </div>
 
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
+          >
+            Register
+          </button>
+
+          {error && (
+            <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

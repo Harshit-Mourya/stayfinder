@@ -113,8 +113,8 @@ const listingSlice = createSlice({
         state.selectedListing = null;
       })
       .addCase(fetchListingById.fulfilled, (state, action) => {
-        state.loading = false;
         state.selectedListing = action.payload;
+        state.loading = false;
       })
       .addCase(fetchListingById.rejected, (state, action) => {
         state.loading = false;

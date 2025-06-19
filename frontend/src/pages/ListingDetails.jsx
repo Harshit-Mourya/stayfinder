@@ -15,26 +15,73 @@ const ListingDetails = () => {
     dispatch(fetchListingById(id));
   }, [dispatch, id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-  if (!selectedListing) return <p>Listing not found.</p>;
+  if (loading) {
+    return (
+      <div className="w-full text-center mt-10">
+        <p className="text-xl font-semibold text-gray-700 animate-pulse">
+          <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading listing
+          details...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full text-center mt-10">
+        <p className="text-xl font-semibold text-red-600">
+          <i className="fa-solid fa-xmark mr-2 text-red-600"></i>
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (!selectedListing) {
+    return (
+      <div className="w-full text-center mt-10">
+        <p className="text-lg text-gray-600">
+          <i className="fa-solid fa-triangle-exclamation mr-2 text-yellow-600"></i>
+          Listing not found.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="listing-details">
-      <h2>{selectedListing.title}</h2>
-      <p>{selectedListing.description}</p>
-      <p>Location: {selectedListing.location}</p>
-      <p>Price: ₹{selectedListing.price} per night</p>
+    <div className="w-full px-8 py-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-4">
+        {selectedListing.title}
+      </h2>
+      <p className="text-gray-600 mb-2">{selectedListing.description}</p>
+      <p className="text-gray-700 mb-1">
+        <strong>
+          <i class="fa-solid fa-location-dot mr-2 text-blue-600"></i>Location:
+        </strong>
+        {selectedListing.location}
+      </p>
+      <p className="text-green-600 font-semibold mb-4">
+        ₹{selectedListing.price}
+        <span className="text-gray-500"> / night</span>
+      </p>
+
       {selectedListing.images?.length > 0 && (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           {selectedListing.images.map((imgUrl, index) => (
-            <img key={index} src={imgUrl} alt={`Listing image ${index + 1}`} />
+            <img
+              key={index}
+              src={imgUrl}
+              alt={`Listing image ${index + 1}`}
+              className="w-full h-60 object-cover rounded-lg"
+            />
           ))}
         </div>
       )}
 
       <Link to={`/book/${selectedListing._id}`}>
-        <button>Book Now</button>
+        <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">
+          Book Now
+        </button>
       </Link>
     </div>
   );

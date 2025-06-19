@@ -15,15 +15,19 @@ const Listings = () => {
     return (
       <div className="w-full text-center mt-10">
         <p className="text-xl font-semibold text-gray-700 animate-pulse">
-          Loading listings...
+          <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading listing...
         </p>
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="w-full text-center mt-10">
-        <p className="text-xl font-semibold text-red-600">❌ {error}</p>
+        <p className="text-xl font-semibold text-red-600">
+          <i className="fa-solid fa-xmark mr-2 text-red-600"></i>
+          {error}
+        </p>
       </div>
     );
   }

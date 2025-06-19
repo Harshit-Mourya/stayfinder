@@ -17,7 +17,7 @@ const CreateListing = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { status, error: createError } = useSelector((state) => state.listings);
+  const { loading } = useSelector((state) => state.listings);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,44 +38,74 @@ const CreateListing = () => {
   };
 
   return (
-    <div className="create-listing">
-      <h2>Create a New Listing</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-        ></textarea>
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="images"
-          placeholder="Image URL"
-          onChange={handleChange}
-        />
+    <div className="flex justify-center items-center min-h-[90vh] px-4">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          Create a New Listing
+        </h2>
 
-        <button type="submit">Create Listing</button>
-        {error && <p className="error">{error}</p>}
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={formData.location}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="text"
+            name="images"
+            placeholder="Image URL"
+            value={formData.images}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, images: [e.target.value] }))
+            }
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
+          >
+            {loading ? "Creating..." : "Create Listing"}
+          </button>
+
+          {error && (
+            <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

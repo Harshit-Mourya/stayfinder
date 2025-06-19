@@ -14,26 +14,32 @@ const Dashboard = () => {
     }
   }, [user]);
 
-  if (!user) return <p>Loading...</p>;
-
+  if (!user) {
+    return (
+      <div className="w-full text-center mt-10">
+        <p className="text-xl font-semibold text-gray-700 animate-pulse">
+          <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading...
+        </p>
+      </div>
+    );
+  }
   const isHost = user.role === "host";
 
   return (
     <div className="dashboard-container p-4">
-      <h2 className="text-xl font-bold mb-2">Welcome, {user.name}</h2>
-      <p className="mb-1">Email: {user.email}</p>
-      <p className="mb-4">Your ID: {user._id}</p>
+      <h2 className="text-2xl text-center font-bold mb-4">
+        Welcome, {user.name}
+      </h2>
 
-      {/* Mini tab-style navbar */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex justify-center gap-6 mb-6 flex-wrap mt-5">
         {isHost && (
           <>
             <button
               onClick={() => setActiveTab("listings")}
               className={`px-4 py-2 rounded ${
                 activeTab === "listings"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
               My Listings
@@ -43,8 +49,8 @@ const Dashboard = () => {
               onClick={() => setActiveTab("host-bookings")}
               className={`px-4 py-2 rounded ${
                 activeTab === "host-bookings"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
               Bookings on My Listings
@@ -54,17 +60,16 @@ const Dashboard = () => {
 
         <button
           onClick={() => setActiveTab("my-bookings")}
-          className={`px-4 py-2 rounded ${
+          className={`px-4 py-2 rounded ${!isHost ? "hidden" : ""} ${
             activeTab === "my-bookings"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-200 hover:bg-gray-300"
           }`}
         >
           My Bookings
         </button>
       </div>
 
-      {/* Content rendering based on tab */}
       <div>
         {activeTab === "listings" && isHost && <HostListings />}
         {activeTab === "host-bookings" && isHost && <HostBookings />}

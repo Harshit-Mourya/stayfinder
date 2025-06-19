@@ -36,12 +36,13 @@ const UserDropdown = ({ user }) => {
         onClick={() => setOpen((prev) => !prev)}
         className="text-sm font-medium text-gray-700 hover:text-blue-600"
       >
-        {user?.name || "User"} ▾
+        <i class="fa-solid fa-user mr-2"></i>
+        {user?.name || "User"}
       </button>
 
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md z-50">
-          <div className="px-4 py-2 text-xs text-gray-500 border-b">
+          <div className="px-4 py-2 text-s text-gray-500 border-b">
             {user?.email}
           </div>
 
@@ -50,14 +51,26 @@ const UserDropdown = ({ user }) => {
               navigate("/dashboard");
               setOpen(false);
             }}
-            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+            className="w-full text-left px-4 py-2 text-m hover:bg-gray-100"
           >
             Dashboard
           </button>
 
+          {user?.role === "host" && (
+            <button
+              onClick={() => {
+                navigate("/createlisting");
+                setOpen(false);
+              }}
+              className="w-full text-left px-4 py-2 text-m hover:bg-gray-100"
+            >
+              Create Listing
+            </button>
+          )}
+
           <button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+            className="w-full text-left px-4 py-2 text-m text-red-600 hover:bg-gray-100"
           >
             Logout
           </button>

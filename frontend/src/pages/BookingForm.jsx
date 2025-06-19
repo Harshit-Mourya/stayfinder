@@ -43,46 +43,65 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="booking-form">
-      <h2>Book This Listing</h2>
+    <div className="flex justify-center items-center min-h-[90vh] px-4">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          Book This Listing
+        </h2>
 
-      {listing && (
-        <div className="listing-preview">
-          <h3>{listing.title}</h3>
-          <img
-            src={listing.images?.[0]}
-            alt={listing.title}
-            style={{ width: "300px", objectFit: "cover", borderRadius: "8px" }}
-          />
-        </div>
-      )}
+        {listing && (
+          <div className="mb-4 text-center">
+            <h3 className="text-lg font-semibold mb-2">{listing.title}</h3>
+            <img
+              src={listing.images?.[0]}
+              alt={listing.title}
+              className="w-full h-48 object-cover rounded"
+            />
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="checkin">Check-in Date:</label>
-        <input
-          id="checkin"
-          type="date"
-          min={new Date().toISOString().split("T")[0]}
-          value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
-          required
-        />
-        <label htmlFor="checkout">Check-out Date:</label>
-        <input
-          id="checkout"
-          type="date"
-          min={checkIn || new Date().toISOString().split("T")[0]}
-          value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
-          required
-        />
-        <p>Total Price: ₹{totalPrice}</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block font-medium mb-1">Check-in Date:</label>
+            <input
+              type="date"
+              min={new Date().toISOString().split("T")[0]}
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Booking..." : "Book Now"}
-        </button>
-        {error && <p className="error">{error}</p>}
-      </form>
+          <div>
+            <label className="block font-medium mb-1">Check-out Date:</label>
+            <input
+              type="date"
+              min={checkIn || new Date().toISOString().split("T")[0]}
+              value={checkOut}
+              onChange={(e) => setCheckOut(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <p className="text-gray-700 font-medium">
+            Total Price: ₹{totalPrice}
+          </p>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
+          >
+            {loading ? "Booking..." : "Book Now"}
+          </button>
+
+          {error && (
+            <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

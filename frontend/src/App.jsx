@@ -18,8 +18,9 @@ import Unauthorized from "./pages/Unauthorized";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-200 overflow-y-scroll scrollbar-hide h-screen">
       <Navbar />
+
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="*" element={<Navigate to="/" />} />
