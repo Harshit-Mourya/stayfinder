@@ -47,6 +47,43 @@ export const fetchListingById = createAsyncThunk(
   }
 );
 
+export const fetchHostListings = createAsyncThunk(
+  "listings/fetchHostListings",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get("/listings/host");
+
+      return res.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Failed to fetch host listings");
+    }
+  }
+);
+
+export const updateListing = createAsyncThunk(
+  "listings/updateListing",
+  async ({ id, updatedData }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.put(`/listings/${id}`, updatedData);
+      return res.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Failed to update listing");
+    }
+  }
+);
+
+export const deleteListing = createAsyncThunk(
+  "listings/deleteListing",
+  async (listingId, thunkAPI) => {
+    try {
+      await axiosInstance.delete(`/listings/${listingId}`);
+      return listingId; // returning the ID so we can remove it from the state
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Failed to delete listing");
+    }
+  }
+);
+
 const listingSlice = createSlice({
   name: "listings",
   initialState: {
@@ -93,6 +130,45 @@ const listingSlice = createSlice({
       })
       .addCase(createListing.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(fetchHostListings.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchHostListings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listings = action.payload;
+      })
+      .addCase(fetchHostListings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteListing.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteListing.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listings = state.listings.filter(
+          (listing) => listing._id !== action.payload
+        );
+      })
+      .addCase(deleteListing.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateListing.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateListing.fulfilled, (state, action) => {
+        state.loading = false;
+        const updated = action.payload;
+        const index = state.listings.findIndex((l) => l._id === updated._id);
+        if (index !== -1) {
+          state.listings[index] = updated;
+        }
+      })
+      .addCase(updateListing.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },

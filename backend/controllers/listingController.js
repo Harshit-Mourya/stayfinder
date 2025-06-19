@@ -63,3 +63,40 @@ export const getHostListings = async (req, res, next) => {
     next(err);
   }
 };
+
+// PUT /api/listings/:id - Update listing
+export const updateListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) return res.status(404).json({ message: "Listing not found" });
+    if (listing.host.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    const updated = await Listing.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.status(200).json(updated);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// DELETE /api/listings/:id - Delete listing
+export const deleteListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) return res.status(404).json({ message: "Listing not found" });
+    if (listing.host.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await Listing.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Listing deleted" });
+  } catch (error) {
+    next(error);
+  }
+};

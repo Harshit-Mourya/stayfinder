@@ -12,6 +12,17 @@ export const createBooking = async (req, res, next) => {
         .json({ message: "Check-out must be after check-in." });
     }
 
+    const overlappingBooking = await Booking.findOne({
+      listing,
+      $or: [{ checkIn: { $lt: checkOut }, checkOut: { $gt: checkIn } }],
+    });
+
+    if (overlappingBooking) {
+      return res.status(400).json({
+        message: "The listing is already booked for the selected dates.",
+      });
+    }
+
     const newBooking = new Booking({
       user: req.user.id,
       listing,

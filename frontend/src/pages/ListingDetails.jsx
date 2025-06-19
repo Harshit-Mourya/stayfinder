@@ -26,11 +26,11 @@ const ListingDetails = () => {
       <p>Location: {selectedListing.location}</p>
       <p>Price: ₹{selectedListing.price} per night</p>
       {selectedListing.images?.length > 0 && (
-        <img
-          src={selectedListing.images[0]}
-          alt={selectedListing.title}
-          style={{ width: "300px", height: "200px", objectFit: "cover" }}
-        />
+        <div>
+          {selectedListing.images.map((imgUrl, index) => (
+            <img key={index} src={imgUrl} alt={`Listing image ${index + 1}`} />
+          ))}
+        </div>
       )}
 
       <Link to={`/book/${selectedListing._id}`}>

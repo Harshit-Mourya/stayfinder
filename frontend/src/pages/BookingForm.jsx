@@ -62,6 +62,7 @@ const BookingForm = () => {
         <input
           id="checkin"
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={checkIn}
           onChange={(e) => setCheckIn(e.target.value)}
           required
@@ -70,6 +71,7 @@ const BookingForm = () => {
         <input
           id="checkout"
           type="date"
+          min={checkIn || new Date().toISOString().split("T")[0]}
           value={checkOut}
           onChange={(e) => setCheckOut(e.target.value)}
           required
