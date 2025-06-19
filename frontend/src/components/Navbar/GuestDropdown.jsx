@@ -1,34 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const GuestDropdown = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="px-4 py-2 text-blue-600 font-semibold hover:underline"
+        className="md:px-4 py-2 text-blue-600 font-semibold hover:underline  sm:text-lg"
       >
-        Account <i className="fa-solid fa-chevron-down ml-1" />
+        <span className="sm:inline hidden">
+          Account&nbsp;
+          <i className="fa-solid fa-chevron-down ml-1 " />
+        </span>
+        <span className="sm:hidden inline">
+          <i className="fa-solid fa-circle-user ml-1 " />
+        </span>
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50">
-          <Link
-            to="/login"
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            onClick={() => setOpen(false)}
+        <div className="absolute right-0 mt-2  w-24 bg-white border rounded-md shadow-md z-50">
+          <button
+            onClick={() => {
+              navigate("/login");
+              setOpen(false);
+            }}
+            className="w-full text-left px-4 py-2 text-m hover:bg-gray-100"
           >
             Login
-          </Link>
-          <Link
-            to="/register"
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            onClick={() => setOpen(false)}
+          </button>
+          <button
+            onClick={() => {
+              navigate("/register");
+              setOpen(false);
+            }}
+            className="w-full text-left px-4 py-2 text-m hover:bg-gray-100"
           >
-            Register
-          </Link>
+            Signup
+          </button>
         </div>
       )}
     </div>

@@ -31,12 +31,12 @@ const Dashboard = () => {
         Welcome, {user.name}
       </h2>
 
-      <div className="flex justify-center gap-6 mb-6 flex-wrap mt-5">
+      <div className="flex justify-between gap-6 mb-6 flex-wrap mt-5 sm:justify-center w-full sm:w-auto">
         {isHost && (
           <>
             <button
               onClick={() => setActiveTab("listings")}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded-md    flex-1 sm:flex-none   sm:text-base ${
                 activeTab === "listings"
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-gray-200 hover:bg-gray-300"
@@ -47,7 +47,7 @@ const Dashboard = () => {
 
             <button
               onClick={() => setActiveTab("host-bookings")}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded-md flex-1 sm:flex-none  sm:text-base ${
                 activeTab === "host-bookings"
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-gray-200 hover:bg-gray-300"
@@ -60,7 +60,9 @@ const Dashboard = () => {
 
         <button
           onClick={() => setActiveTab("my-bookings")}
-          className={`px-4 py-2 rounded ${!isHost ? "hidden" : ""} ${
+          className={`px-4 py-2 rounded-md flex-1 sm:flex-none   sm:text-base ${
+            !isHost ? "hidden" : ""
+          } ${
             activeTab === "my-bookings"
               ? "bg-blue-600 text-white hover:bg-blue-700"
               : "bg-gray-200 hover:bg-gray-300"

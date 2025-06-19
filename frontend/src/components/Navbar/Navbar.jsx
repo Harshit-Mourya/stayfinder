@@ -7,24 +7,27 @@ const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   return (
-    <nav className="flex justify-between items-center px-6 py-4 shadow-md bg-white">
+    <nav className="flex justify-between items-center md:px-6 py-4 px-4  shadow-md bg-white">
       <div className="flex items-center gap-4">
-        <Link to="/" className="text-xl font-bold text-blue-600">
+        <Link
+          to="/"
+          className="sm:text-2xl sm:font-bold text-blue-600 text-lg font-semibold "
+        >
           StayFinder
         </Link>
       </div>
 
-      <div className="flex-grow mx-4 max-w-md">
+      <div className="flex-grow md:mx-4 md:max-w-md sm:max-w-[16rem] max-w-[10rem] mx-2">
         <input
           type="text"
-          placeholder="Search (Coming soon...)"
+          placeholder="Search"
           disabled
           className="w-full px-4 py-2 border rounded-md text-gray-500 bg-gray-100 cursor-not-allowed"
         />
       </div>
 
-      <div className="flex items-center gap-4">
-        <p className="text-m font-semibold text-blue-600 hover:underline mr-4">
+      <div className="flex items-center  gap-4 ">
+        <p className="sm:text-lg font-semibold text-blue-600 hover:underline sm:mr-4">
           Filters
         </p>
 
