@@ -13,6 +13,8 @@ const Register = () => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,15 +27,25 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
-    const resultAction = await dispatch(registerUser(formData));
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-    if (registerUser.fulfilled.match(resultAction)) {
-      toast.success("Registration successful!");
-      navigate("/dashboard");
-    } else {
-      const msg = resultAction.payload || "Registration failed.";
-      toast.error(msg);
-      setError(msg);
+    try {
+      const resultAction = await dispatch(registerUser(formData));
+
+      if (registerUser.fulfilled.match(resultAction)) {
+        toast.success("Registration successful!");
+        navigate("/dashboard");
+      } else {
+        const msg = resultAction.payload || "Registration failed.";
+        toast.error(msg);
+        setError(msg);
+      }
+    } catch (err) {
+      toast.error("An unexpected error occurred. Please try again.");
+      setError("Something went wrong.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -47,6 +59,7 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
+            disabled={isSubmitting}
             name="name"
             placeholder="Name"
             required
@@ -57,6 +70,7 @@ const Register = () => {
 
           <input
             type="email"
+            disabled={isSubmitting}
             name="email"
             placeholder="Email"
             required
@@ -67,6 +81,7 @@ const Register = () => {
 
           <input
             type="password"
+            disabled={isSubmitting}
             name="password"
             placeholder="Password"
             required
@@ -82,6 +97,7 @@ const Register = () => {
             <label className="flex items-center gap-2">
               <input
                 type="radio"
+                disabled={isSubmitting}
                 name="role"
                 value="user"
                 checked={formData.role === "user"}
@@ -93,6 +109,7 @@ const Register = () => {
             <label className="flex items-center gap-2">
               <input
                 type="radio"
+                disabled={isSubmitting}
                 name="role"
                 value="host"
                 checked={formData.role === "host"}
@@ -104,9 +121,10 @@ const Register = () => {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
-            Register
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
 
           {error && (

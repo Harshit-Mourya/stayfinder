@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../slices/authSlice";
+import { loginUser, clearError } from "../slices/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,21 +18,31 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
-  };
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      toast.success("Login successful!");
-      navigate("/dashboard");
+    try {
+      const result = await dispatch(loginUser({ email, password }));
+      if (loginUser.fulfilled.match(result)) {
+        toast.success("Login successful!");
+        navigate("/dashboard");
+      } else {
+        toast.error(result.payload || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error("Unexpected error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [isAuthenticated, user, navigate]);
+  };
 
   useEffect(() => {
     if (error) {
       toast.error(error);
+      dispatch(clearError());
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] px-4">
@@ -43,6 +54,7 @@ const Login = () => {
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
+            disabled={loading || isSubmitting}
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -52,6 +64,7 @@ const Login = () => {
 
           <input
             type="password"
+            disabled={loading || isSubmitting}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -61,7 +74,7 @@ const Login = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
             {loading ? "Logging in..." : "Login"}

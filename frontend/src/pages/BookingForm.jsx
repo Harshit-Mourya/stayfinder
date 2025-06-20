@@ -12,6 +12,8 @@ const BookingForm = () => {
 
   const listing = useSelector((state) => state.listings.selectedListing);
 
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const totalPrice = useTotalPrice(checkIn, checkOut, listing?.price);
@@ -25,21 +27,31 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (new Date(checkIn) >= new Date(checkOut)) {
-      toast.error("Check-out date must be after check-in date!");
-      return;
-    }
+    if (isProcessing) return;
+    setIsProcessing(true);
 
-    navigate("/payment", {
-      state: {
-        listing: listingId,
-        title: listing?.title,
-        image: listing?.images?.[0],
-        checkIn,
-        checkOut,
-        totalPrice,
-      },
-    });
+    try {
+      if (new Date(checkIn) >= new Date(checkOut)) {
+        toast.error("Check-out date must be after check-in date!");
+        return;
+      }
+
+      navigate("/payment", {
+        state: {
+          listing: listingId,
+          title: listing?.title,
+          image: listing?.images?.[0],
+          checkIn,
+          checkOut,
+          totalPrice,
+        },
+      });
+    } catch (error) {
+      toast.error("An unexpected error occurred.");
+      console.error("Booking form error:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -65,6 +77,7 @@ const BookingForm = () => {
             <label className="block font-medium mb-1">Check-in Date:</label>
             <input
               type="date"
+              disabled={isProcessing}
               min={new Date().toISOString().split("T")[0]}
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
@@ -77,6 +90,7 @@ const BookingForm = () => {
             <label className="block font-medium mb-1">Check-out Date:</label>
             <input
               type="date"
+              disabled={isProcessing}
               min={checkIn || new Date().toISOString().split("T")[0]}
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
@@ -91,6 +105,7 @@ const BookingForm = () => {
 
           <button
             type="submit"
+            disabled={isProcessing}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
             Proceed to payment{" "}

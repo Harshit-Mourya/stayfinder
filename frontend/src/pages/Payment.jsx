@@ -20,34 +20,44 @@ const Payment = () => {
   }, [bookingDetails, navigate]);
 
   const handlePayment = async () => {
-    if (isProcessing) return;
+    if (isProcessing || !bookingDetails) return;
+
     setIsProcessing(true);
 
-    const success = Math.random() > 0.2;
+    try {
+      // Fake success simulation
+      const success = Math.random() > 0.2;
 
-    if (!success) {
-      toast.error("Payment failed. Please try again.");
-      return navigate(`/book/${bookingDetails.listing}`);
-    }
+      if (!success) {
+        toast.error("Payment failed. Please try again.");
+        navigate(`/book/${bookingDetails.listing}`);
+        return;
+      }
 
-    // simulate: payment succeeded, now try booking
-    const resultAction = await dispatch(
-      createBooking({
-        listing: bookingDetails.listing,
-        checkIn: bookingDetails.checkIn,
-        checkOut: bookingDetails.checkOut,
-        totalPrice: bookingDetails.totalPrice,
-      })
-    );
-
-    if (createBooking.fulfilled.match(resultAction)) {
-      toast.success("Payment successful! Booking confirmed.");
-      navigate("/dashboard");
-    } else {
-      toast.error(
-        "Payment captured but booking failed! Please contact support."
+      // Simulate booking creation
+      const resultAction = await dispatch(
+        createBooking({
+          listing: bookingDetails.listing,
+          checkIn: bookingDetails.checkIn,
+          checkOut: bookingDetails.checkOut,
+          totalPrice: bookingDetails.totalPrice,
+        })
       );
-      navigate(`/book/${bookingDetails.listing}`);
+
+      if (createBooking.fulfilled.match(resultAction)) {
+        toast.success("Payment successful! Booking confirmed.");
+        navigate("/dashboard");
+      } else {
+        toast.error(
+          resultAction.payload ||
+            "Payment captured but booking failed! Please contact support."
+        );
+        navigate(`/book/${bookingDetails.listing}`);
+      }
+    } catch (err) {
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 

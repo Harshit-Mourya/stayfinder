@@ -18,6 +18,7 @@ const EditListing = () => {
     location: "",
     images: [""],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch the listing on mount
   useEffect(() => {
@@ -62,18 +63,25 @@ const EditListing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedData = {
-      ...formData,
-      price: Number(formData.price),
-    };
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-    const result = await dispatch(updateListing({ id, updatedData }));
+    try {
+      const updatedData = { ...formData, price: Number(formData.price) };
+      const result = await dispatch(updateListing({ id, updatedData }));
 
-    if (updateListing.fulfilled.match(result)) {
-      toast.success("Listing updated successfully!");
-      navigate("/dashboard");
-    } else {
-      toast.error(result.payload || "Failed to update listing!");
+      if (updateListing.fulfilled.match(result)) {
+        toast.success("Listing updated successfully!");
+        navigate("/dashboard");
+      } else {
+        toast.error(result.payload || "Failed to update listing!");
+      }
+    } catch (error) {
+      // Handle unexpected errors here
+      toast.error("An unexpected error occurred!");
+      console.error("Update listing error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -97,6 +105,7 @@ const EditListing = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
+            disabled={isSubmitting}
             name="title"
             placeholder="Title"
             value={formData.title}
@@ -107,6 +116,7 @@ const EditListing = () => {
 
           <textarea
             name="description"
+            disabled={isSubmitting}
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
@@ -116,6 +126,7 @@ const EditListing = () => {
 
           <input
             type="text"
+            disabled={isSubmitting}
             name="location"
             placeholder="Location"
             value={formData.location}
@@ -126,6 +137,7 @@ const EditListing = () => {
 
           <input
             type="number"
+            disabled={isSubmitting}
             name="price"
             placeholder="Price"
             value={formData.price}
@@ -142,6 +154,7 @@ const EditListing = () => {
               <input
                 key={index}
                 type="text"
+                disabled={isSubmitting}
                 placeholder={`Image URL ${index + 1}`}
                 value={img}
                 onChange={(e) => handleImageChange(e, index)}
@@ -150,6 +163,7 @@ const EditListing = () => {
             ))}
             <button
               type="button"
+              disabled={isSubmitting}
               onClick={addImageField}
               className="text-blue-600 text-sm hover:underline mt-1"
             >
@@ -159,6 +173,7 @@ const EditListing = () => {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
             Update Listing

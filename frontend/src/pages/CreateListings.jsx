@@ -14,6 +14,8 @@ const CreateListing = () => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.listings);
@@ -26,16 +28,26 @@ const CreateListing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (isSubmitting) return; // Prevent multiple submits
+    setIsSubmitting(true);
 
-    const resultAction = await dispatch(createListing(formData));
+    try {
+      const resultAction = await dispatch(createListing(formData));
 
-    if (createListing.fulfilled.match(resultAction)) {
-      toast.success("Listing created successfully!");
-      navigate("/dashboard");
-    } else {
-      const msg = resultAction.payload || "Failed to create listing";
-      toast.error(msg);
-      setError(msg);
+      if (createListing.fulfilled.match(resultAction)) {
+        toast.success("Listing created successfully!");
+        navigate("/dashboard");
+      } else {
+        const msg = resultAction.payload || "Failed to create listing";
+        toast.error(msg);
+        setError(msg);
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+      setError("Unexpected error occurred.");
+      console.error("CreateListing error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -49,6 +61,7 @@ const CreateListing = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
+            disabled={loading || isSubmitting}
             name="title"
             placeholder="Title"
             value={formData.title}
@@ -59,6 +72,7 @@ const CreateListing = () => {
 
           <textarea
             name="description"
+            disabled={loading || isSubmitting}
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
@@ -67,6 +81,7 @@ const CreateListing = () => {
 
           <input
             type="number"
+            disabled={loading || isSubmitting}
             name="price"
             placeholder="Price"
             value={formData.price}
@@ -77,6 +92,7 @@ const CreateListing = () => {
 
           <input
             type="text"
+            disabled={loading || isSubmitting}
             name="location"
             placeholder="Location"
             value={formData.location}
@@ -86,6 +102,7 @@ const CreateListing = () => {
 
           <input
             type="text"
+            disabled={loading || isSubmitting}
             name="images"
             placeholder="Image URL"
             value={formData.images}
@@ -97,10 +114,10 @@ const CreateListing = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isSubmitting}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
-            {loading ? "Creating..." : "Create Listing"}
+            {isSubmitting ? "Creating..." : "Create Listing"}
           </button>
 
           {error && (
