@@ -15,6 +15,7 @@ import BookingForm from "./pages/BookingForm";
 import ListingDetails from "./pages/ListingDetails";
 import EditListing from "./pages/EditListing";
 import Unauthorized from "./pages/Unauthorized";
+import Payment from "./pages/Payment";
 
 function App() {
   return (
@@ -61,6 +62,14 @@ function App() {
           }
         />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route
+          path="/payment"
+          element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

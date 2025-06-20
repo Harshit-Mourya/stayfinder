@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBooking } from "../slices/bookingSlice";
 import { fetchListingById } from "../slices/listingSlice";
 import useTotalPrice from "../hooks/useTotalPrice";
-
+import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 
 const BookingForm = () => {
@@ -17,7 +16,7 @@ const BookingForm = () => {
   const [checkOut, setCheckOut] = useState("");
   const totalPrice = useTotalPrice(checkIn, checkOut, listing?.price);
 
-  const { loading, error } = useSelector((state) => state.bookings);
+  const { error } = useSelector((state) => state.bookings);
 
   useEffect(() => {
     dispatch(fetchListingById(listingId));
@@ -27,19 +26,20 @@ const BookingForm = () => {
     e.preventDefault();
 
     if (new Date(checkIn) >= new Date(checkOut)) {
-      alert("Check-out date must be after check-in date!");
+      toast.error("Check-out date must be after check-in date!");
       return;
     }
 
-    const resultAction = await dispatch(
-      createBooking({ listing: listingId, checkIn, checkOut, totalPrice })
-    );
-
-    if (createBooking.fulfilled.match(resultAction)) {
-      navigate("/dashboard");
-    } else {
-      console.error("Booking failed:", resultAction.payload);
-    }
+    navigate("/payment", {
+      state: {
+        listing: listingId,
+        title: listing?.title,
+        image: listing?.images?.[0],
+        checkIn,
+        checkOut,
+        totalPrice,
+      },
+    });
   };
 
   return (
@@ -91,10 +91,9 @@ const BookingForm = () => {
 
           <button
             type="submit"
-            disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
-            {loading ? "Booking..." : "Book Now"}
+            Proceed to payment{" "}
           </button>
 
           {error && (
