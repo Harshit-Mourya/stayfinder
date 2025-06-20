@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { createListing } from "../slices/listingSlice";
 
@@ -31,9 +30,12 @@ const CreateListing = () => {
     const resultAction = await dispatch(createListing(formData));
 
     if (createListing.fulfilled.match(resultAction)) {
+      toast.success("Listing created successfully!");
       navigate("/dashboard");
     } else {
-      setError(resultAction.payload || "Failed to create listing");
+      const msg = resultAction.payload || "Failed to create listing";
+      toast.error(msg);
+      setError(msg);
     }
   };
 

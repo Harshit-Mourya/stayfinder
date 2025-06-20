@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBooking } from "../slices/bookingSlice";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const bookingDetails = location.state;
 
@@ -19,6 +20,9 @@ const Payment = () => {
   }, [bookingDetails, navigate]);
 
   const handlePayment = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     const success = Math.random() > 0.2;
 
     if (!success) {
@@ -78,7 +82,10 @@ const Payment = () => {
         </p>
 
         <button
-          onClick={handlePayment}
+          disabled={isProcessing}
+          onClick={() => {
+            handlePayment();
+          }}
           className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md transition"
         >
           Pay ₹{totalPrice}

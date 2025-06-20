@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../slices/authSlice";
@@ -20,13 +21,17 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log("isAuthenticated in Login.jsx:", isAuthenticated);
-    console.log("user in Login.jsx: ", user);
-
-    if (user) {
+    if (isAuthenticated && user) {
+      toast.success("Login successful!");
       navigate("/dashboard");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] px-4">

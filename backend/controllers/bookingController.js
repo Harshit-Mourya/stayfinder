@@ -47,10 +47,12 @@ export const createBooking = async (req, res, next) => {
 // GET /api/bookings/user - Get bookings by logged-in user
 export const getUserBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id }).populate({
-      path: "listing",
-      select: "host title images price",
-    });
+    const bookings = await Booking.find({ user: req.user.id })
+      .populate({
+        path: "listing",
+        select: "host title images price",
+      })
+      .sort({ createdAt: -1 });
     res.status(200).json(bookings);
   } catch (error) {
     next(error);

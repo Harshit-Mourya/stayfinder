@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const FilterDropdown = ({ onClose }) => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const FilterDropdown = ({ onClose }) => {
     if (checkOut) params.set("checkOut", checkOut);
 
     navigate("/?" + params.toString());
+
+    toast.info("Filters applied");
 
     onClose(); // close dropdown
   };

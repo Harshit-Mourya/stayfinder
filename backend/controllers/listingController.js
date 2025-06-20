@@ -54,7 +54,9 @@ export const getAllListings = async (req, res, next) => {
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
-    let listings = await Listing.find(filter).populate("host", "name email");
+    let listings = await Listing.find(filter)
+      .populate("host", "name email")
+      .sort({ createdAt: -1 });
 
     if (checkIn && checkOut) {
       const checkInDate = new Date(checkIn);
@@ -104,7 +106,9 @@ export const getListingById = async (req, res, next) => {
 export const getHostListings = async (req, res, next) => {
   try {
     const hostId = req.user.id;
-    const listings = await Listing.find({ host: hostId });
+    const listings = await Listing.find({ host: hostId }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(listings);
   } catch (err) {
     next(err);

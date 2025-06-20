@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,9 +28,12 @@ const Register = () => {
     const resultAction = await dispatch(registerUser(formData));
 
     if (registerUser.fulfilled.match(resultAction)) {
+      toast.success("Registration successful!");
       navigate("/dashboard");
     } else {
-      setError(resultAction.payload || "Registration failed.");
+      const msg = resultAction.payload || "Registration failed.";
+      toast.error(msg);
+      setError(msg);
     }
   };
 

@@ -16,7 +16,7 @@ const UserDropdown = ({ user }) => {
     setTimeout(() => {
       dispatch(logout());
 
-      toast.success("You have been logged out successfully!");
+      toast.success("Logged out successfully!");
     }, 5);
   };
 

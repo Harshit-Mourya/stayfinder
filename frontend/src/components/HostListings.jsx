@@ -3,6 +3,7 @@ import ListingCard from "./ListingCard";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { fetchHostListings, deleteListing } from "../slices/listingSlice";
 
@@ -16,9 +17,17 @@ const HostListings = () => {
 
   const { listings, loading, error } = useSelector((state) => state.listings);
 
-  const handleDelete = (listingId) => {
+  const handleDelete = async (listingId) => {
     if (window.confirm("Are you sure you want to delete this listing?")) {
-      dispatch(deleteListing(listingId));
+      const resultAction = await dispatch(deleteListing(listingId));
+
+      if (deleteListing.fulfilled.match(resultAction)) {
+        toast.success("Listing deleted successfully!", {
+          autoClose: 3000,
+        });
+      } else {
+        toast.error(resultAction.payload || "Failed to delete listing!");
+      }
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateListing, fetchListingById } from "../slices/listingSlice";
+import { toast } from "react-toastify";
 
 const EditListing = () => {
   const { id } = useParams();
@@ -59,15 +60,21 @@ const EditListing = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedData = {
       ...formData,
       price: Number(formData.price),
     };
-    dispatch(updateListing({ id, updatedData })).then(() => {
+
+    const result = await dispatch(updateListing({ id, updatedData }));
+
+    if (updateListing.fulfilled.match(result)) {
+      toast.success("Listing updated successfully!");
       navigate("/dashboard");
-    });
+    } else {
+      toast.error(result.payload || "Failed to update listing!");
+    }
   };
 
   if (loading || !selectedListing) {
@@ -158,70 +165,6 @@ const EditListing = () => {
           </button>
         </form>
       </div>
-    </div>
-  );
-
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Edit Listing</h2>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          maxWidth: "400px",
-        }}
-      >
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-        <div>
-          <label>Image URLs:</label>
-          {formData.images.map((img, index) => (
-            <input
-              key={index}
-              type="text"
-              placeholder={`Image URL ${index + 1}`}
-              value={img}
-              onChange={(e) => handleImageChange(e, index)}
-              style={{ marginBottom: "0.5rem" }}
-            />
-          ))}
-          <button type="button" onClick={addImageField}>
-            + Add another image
-          </button>
-        </div>
-        <button type="submit">Update Listing</button>
-      </form>
     </div>
   );
 };
