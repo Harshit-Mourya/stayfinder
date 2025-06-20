@@ -1,4 +1,5 @@
 import Listing from "../models/Listing.js";
+import Booking from "../models/Booking.js";
 
 // @desc    Create a new listing
 // @route   POST /api/listings
@@ -30,7 +31,53 @@ export const createListing = async (req, res, next) => {
 // @access  Public
 export const getAllListings = async (req, res, next) => {
   try {
-    const listings = await Listing.find().populate("host", "name email");
+    const { search, location, minPrice, maxPrice, checkIn, checkOut } =
+      req.query;
+
+    let filter = {};
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    if (location) {
+      filter.location = { $regex: location, $options: "i" };
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    let listings = await Listing.find(filter).populate("host", "name email");
+
+    if (checkIn && checkOut) {
+      const checkInDate = new Date(checkIn);
+      const checkOutDate = new Date(checkOut);
+
+      const conflictingBookings = await Booking.find({
+        $or: [
+          {
+            checkIn: { $lt: checkOutDate },
+            checkOut: { $gt: checkInDate },
+          },
+        ],
+      });
+
+      const bookedListingIds = conflictingBookings.map((b) =>
+        b.listing.toString()
+      );
+
+      listings = listings.filter(
+        (listing) => !bookedListingIds.includes(listing._id.toString())
+      );
+    }
+
     res.status(200).json(listings);
   } catch (err) {
     next(err);

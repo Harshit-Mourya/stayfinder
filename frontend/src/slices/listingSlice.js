@@ -3,10 +3,15 @@ import axiosInstance from "../utils/axiosInstance";
 
 export const fetchListings = createAsyncThunk(
   "listings/fetchAll",
-  async (_, thunkAPI) => {
+  async (query = {}, thunkAPI) => {
     try {
-      const res = await axiosInstance.get("/listings");
+      const params = new URLSearchParams();
 
+      Object.entries(query).forEach(([key, value]) => {
+        if (value) params.set(key, value);
+      });
+
+      const res = await axiosInstance.get(`/listings?${params.toString()}`);
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue("Failed to fetch listings");

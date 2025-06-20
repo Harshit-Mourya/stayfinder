@@ -9,14 +9,14 @@ const GuestDropdown = () => {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="md:px-4 py-2 text-blue-600 font-semibold hover:underline  sm:text-lg"
+        className="lg:px-4  text-blue-600 font-semibold hover:underline  sm:text-lg text-base"
       >
         <span className="sm:inline hidden">
           Account&nbsp;
           <i className="fa-solid fa-chevron-down ml-1 " />
         </span>
         <span className="sm:hidden inline">
-          <i className="fa-solid fa-circle-user ml-1 " />
+          <i className="fa-solid fa-user ml-1 " />
         </span>
       </button>
 

@@ -34,10 +34,10 @@ const UserDropdown = ({ user }) => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="text-sm font-medium text-gray-700 hover:text-blue-600 sm:text-lg"
+        className=" font-medium text-gray-700 hover:text-blue-600 sm:text-lg text-base lg:px-4"
       >
-        <i className="fa-solid fa-user mr-2"></i>
-        <span className="sm:inline hidden">{user?.name || "User"}</span>
+        <i className="fa-solid fa-circle-user mr-2"></i>
+        {user?.name || "User"}
       </button>
 
       {open && (

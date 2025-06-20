@@ -2,14 +2,27 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchListings } from "../slices/listingSlice";
 import ListingCard from "./ListingCard";
+import { useLocation } from "react-router-dom";
 
 const Listings = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { listings, loading, error } = useSelector((state) => state.listings);
 
   useEffect(() => {
-    dispatch(fetchListings());
-  }, [dispatch]);
+    const params = new URLSearchParams(location.search);
+    const query = {
+      search: params.get("search") || "",
+      location: params.get("location") || "",
+      minPrice: params.get("minPrice") || "",
+      maxPrice: params.get("maxPrice") || "",
+      checkIn: params.get("checkIn") || "",
+      checkOut: params.get("checkOut") || "",
+    };
+
+    dispatch(fetchListings(query || "")); // "" fetches all listings
+  }, [location.search, dispatch]);
 
   if (loading) {
     return (
