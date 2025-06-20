@@ -16,4 +16,18 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+// Handle 401 responses globally
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      store.dispatch(logoutUser()); // clear auth state
+      localStorage.removeItem("token"); // optional: clear token
+      window.location.href = "/login"; // force redirect
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;
