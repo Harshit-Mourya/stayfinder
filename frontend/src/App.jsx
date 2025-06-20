@@ -1,6 +1,5 @@
 import Navbar from "./components/Navbar/Navbar";
 import "./App.css";
-import { Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,6 +15,7 @@ import ListingDetails from "./pages/ListingDetails";
 import EditListing from "./pages/EditListing";
 import Unauthorized from "./pages/Unauthorized";
 import Payment from "./pages/Payment";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
 
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
