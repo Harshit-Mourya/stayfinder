@@ -6,15 +6,6 @@ const PrivateRoute = ({ children, requiredRole }) => {
     (state) => state.auth
   );
 
-  // console.log(
-  //   "isAuthenticated: ",
-  //   isAuthenticated,
-  //   " user: ",
-  //   user,
-  //   " initialized: ",
-  //   initialized
-  // );
-
   if (!initialized)
     return (
       <div className="w-full text-center my-5">

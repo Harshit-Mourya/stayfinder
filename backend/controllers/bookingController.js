@@ -36,8 +36,6 @@ export const createBooking = async (req, res, next) => {
       { path: "listing", select: "title images price host" },
     ]);
 
-    console.log("newBooking: ", newBooking);
-
     res.status(201).json(newBooking);
   } catch (error) {
     next(error);

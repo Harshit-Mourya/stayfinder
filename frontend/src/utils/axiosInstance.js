@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid
-      store.dispatch(logoutUser()); // clear auth state
+
       localStorage.removeItem("token"); // optional: clear token
       window.location.href = "/login"; // force redirect
     }

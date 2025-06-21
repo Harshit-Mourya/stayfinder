@@ -43,7 +43,7 @@ const Register = () => {
       }
     } catch (err) {
       toast.error("An unexpected error occurred. Please try again.");
-      setError("Something went wrong.");
+      setError("Something went wrong: ", err);
     } finally {
       setIsSubmitting(false);
     }

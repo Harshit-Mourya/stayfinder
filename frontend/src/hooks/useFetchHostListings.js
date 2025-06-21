@@ -9,12 +9,11 @@ const useFetchHostListings = () => {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axiosInstance.get("/listings/host");
 
         setListings(res.data);
       } catch (err) {
-        setError("Failed to fetch host listings");
+        setError("Failed to fetch host listings: ", err);
       } finally {
         setLoading(false);
       }

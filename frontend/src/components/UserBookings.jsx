@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const UserBookings = () => {
   const dispatch = useDispatch();
   const { bookings, loading, error } = useSelector((state) => state.bookings);
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(fetchUserBookings());

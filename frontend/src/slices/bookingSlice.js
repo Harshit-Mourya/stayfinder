@@ -6,10 +6,7 @@ export const createBooking = createAsyncThunk(
   "bookings/createBooking",
   async (bookingData, thunkAPI) => {
     try {
-      console.log(bookingData);
-
       const res = await axiosInstance.post("/bookings", bookingData);
-      console.log(res.data);
 
       return res.data;
     } catch (err) {
