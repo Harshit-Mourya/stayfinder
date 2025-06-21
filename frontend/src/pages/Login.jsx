@@ -12,9 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, error, isAuthenticated, user } = useSelector(
-    (state) => state.auth
-  );
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,7 +37,6 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
       dispatch(clearError());
     }
   }, [error, dispatch]);

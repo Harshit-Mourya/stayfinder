@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserBookings } from "../slices/bookingSlice";
+import { Link } from "react-router-dom";
 
 const UserBookings = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,11 @@ const UserBookings = () => {
     return (
       <div className="text-center text-gray-600 mt-10 text-lg">
         You haven&#39;t made any bookings yet.
+        <br />
+        <Link to="/" className="text-blue-600 hover:underline font-medium ml-1">
+          Browse listings
+        </Link>
+        &nbsp;to make your first booking.
       </div>
     );
   }

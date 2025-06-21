@@ -15,3 +15,6 @@ npm-debug.log
 
 # OS
 Thumbs.db
+
+# Ignore MongoDB dump folder
+dump/

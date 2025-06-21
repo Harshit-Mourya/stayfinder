@@ -58,7 +58,7 @@ const ListingDetails = () => {
       <p className="text-gray-700 mb-1">
         <strong>
           <i className="fa-solid fa-location-dot mr-2 text-blue-600"></i>
-          Location:
+          Location:&nbsp;
         </strong>
         {selectedListing.location}
       </p>
