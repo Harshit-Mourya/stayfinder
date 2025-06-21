@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { createListing } from "../slices/listingSlice";
+import ImageUpload from "../components/ImageUpload.jsx";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const CreateListing = () => {
     description: "",
     price: "",
     location: "",
-    images: [""],
+    images: [],
   });
 
   const [error, setError] = useState("");
@@ -30,6 +31,13 @@ const CreateListing = () => {
     setError("");
     if (isSubmitting) return; // Prevent multiple submits
     setIsSubmitting(true);
+
+    if (!formData.images.length) {
+      setError("Please upload at least one image");
+      toast.error("Please upload at least one image");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const resultAction = await dispatch(createListing(formData));
@@ -100,7 +108,15 @@ const CreateListing = () => {
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
-          <input
+          <ImageUpload
+            images={formData.images}
+            setImages={(newImages) =>
+              setFormData((prev) => ({ ...prev, images: newImages }))
+            }
+            disabled={loading || isSubmitting}
+          />
+
+          {/* <input
             type="text"
             disabled={loading || isSubmitting}
             name="images"
@@ -110,7 +126,7 @@ const CreateListing = () => {
               setFormData((prev) => ({ ...prev, images: [e.target.value] }))
             }
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          /> */}
 
           <button
             type="submit"

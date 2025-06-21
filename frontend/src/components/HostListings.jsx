@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import ListingCard from "./ListingCard";
+
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import { fetchHostListings, deleteListing } from "../slices/listingSlice";
 
@@ -35,6 +37,14 @@ const HostListings = () => {
     return (
       <div className="text-center text-gray-600 mt-10 text-lg">
         You haven&#39;t created any listings yet.
+        <br />
+        <Link
+          to="/createlisting"
+          className="text-blue-600 hover:underline font-medium ml-1"
+        >
+          Click here
+        </Link>
+        &nbsp;to create one.
       </div>
     );
   }

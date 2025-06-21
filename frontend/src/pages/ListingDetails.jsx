@@ -67,10 +67,10 @@ const ListingDetails = () => {
 
       {selectedListing.images?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-          {selectedListing.images.map((imgUrl, index) => (
+          {selectedListing.images.map((img, index) => (
             <img
               key={index}
-              src={imgUrl}
+              src={img.url}
               alt={`Listing image ${index + 1}`}
               className="w-full h-60 object-cover rounded-lg"
             />

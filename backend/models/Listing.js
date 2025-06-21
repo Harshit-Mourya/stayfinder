@@ -6,7 +6,12 @@ const listingSchema = new mongoose.Schema(
     description: String,
     price: { type: Number, required: true },
     location: String,
-    images: [String],
+    images: [
+      {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
+      },
+    ],
     host: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }

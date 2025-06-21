@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateListing, fetchListingById } from "../slices/listingSlice";
 import { toast } from "react-toastify";
+import ImageUpload from "../components/ImageUpload.jsx";
 
 const EditListing = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const EditListing = () => {
     description: "",
     price: "",
     location: "",
-    images: [""],
+    images: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,7 +34,7 @@ const EditListing = () => {
         description: selectedListing.description || "",
         price: selectedListing.price || "",
         location: selectedListing.location || "",
-        images: selectedListing.images || "",
+        images: selectedListing.images || [],
       });
     }
   }, [selectedListing]);
@@ -42,22 +43,6 @@ const EditListing = () => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleImageChange = (e, index) => {
-    const updatedImages = [...formData.images];
-    updatedImages[index] = e.target.value;
-    setFormData((prev) => ({
-      ...prev,
-      images: updatedImages,
-    }));
-  };
-
-  const addImageField = () => {
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ""],
     }));
   };
 
@@ -105,7 +90,7 @@ const EditListing = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
             name="title"
             placeholder="Title"
             value={formData.title}
@@ -116,7 +101,7 @@ const EditListing = () => {
 
           <textarea
             name="description"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
@@ -126,7 +111,7 @@ const EditListing = () => {
 
           <input
             type="text"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
             name="location"
             placeholder="Location"
             value={formData.location}
@@ -137,7 +122,7 @@ const EditListing = () => {
 
           <input
             type="number"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
             name="price"
             placeholder="Price"
             value={formData.price}
@@ -147,33 +132,18 @@ const EditListing = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Image URLs:
-            </label>
-            {formData.images.map((img, index) => (
-              <input
-                key={index}
-                type="text"
-                disabled={isSubmitting}
-                placeholder={`Image URL ${index + 1}`}
-                value={img}
-                onChange={(e) => handleImageChange(e, index)}
-                className="w-full mb-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            ))}
-            <button
-              type="button"
-              disabled={isSubmitting}
-              onClick={addImageField}
-              className="text-blue-600 text-sm hover:underline mt-1"
-            >
-              + Add another image
-            </button>
+            <ImageUpload
+              images={formData.images}
+              setImages={(newImages) =>
+                setFormData((prev) => ({ ...prev, images: newImages }))
+              }
+              disabled={isSubmitting || loading}
+            />
           </div>
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
           >
             Update Listing

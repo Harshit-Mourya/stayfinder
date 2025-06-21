@@ -40,7 +40,7 @@ const BookingForm = () => {
         state: {
           listing: listingId,
           title: listing?.title,
-          image: listing?.images?.[0],
+          image: listing?.images?.[0].url,
           checkIn,
           checkOut,
           totalPrice,
@@ -65,7 +65,7 @@ const BookingForm = () => {
           <div className="mb-4 text-center">
             <h3 className="text-lg font-semibold mb-2">{listing.title}</h3>
             <img
-              src={listing.images?.[0]}
+              src={listing.images?.[0].url}
               alt={listing.title}
               className="w-full h-48 object-cover rounded"
             />

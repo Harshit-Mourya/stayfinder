@@ -4,10 +4,12 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
+import cloudinaryRoutes from "./routes/cloudinaryRoutes.js";
 
 import errorHandler from "./middlewares/errorHandler.js";
 import listingRoutes from "./routes/listingRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -38,6 +40,8 @@ app.get("/", (req, res) => res.send("API is working"));
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/cloudinary", cloudinaryRoutes);
 
 app.use((req, res, next) => {
   res.status(404);

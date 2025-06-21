@@ -7,7 +7,7 @@ const ListingCard = ({ listing }) => {
       <Link to={`/listing/${listing._id}`}>
         <div className="listing-card bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col h-full">
           <img
-            src={listing.images?.[0] || "https://via.placeholder.com/300"}
+            src={listing.images?.[0].url || "https://via.placeholder.com/300"}
             alt={listing.title}
             className="listing-image h-48 w-full object-cover"
           />

@@ -9,15 +9,29 @@ export const createListing = async (req, res, next) => {
     const { title, description, price, location, images, availableDates } =
       req.body;
 
+    const cleanImages = Array.isArray(images)
+      ? images.filter((img) => img.url && img.public_id)
+      : [];
+
     const newListing = new Listing({
       title,
       description,
       price,
       location,
-      images, // array of image URLs
-      availableDates, // array of Dates
-      host: req.user.id, // comes from verifyToken
+      images: cleanImages,
+      availableDates,
+      host: req.user.id,
     });
+
+    // const newListing = new Listing({
+    //   title,
+    //   description,
+    //   price,
+    //   location,
+    //   images, // array of image URLs
+    //   availableDates, // array of Dates
+    //   host: req.user.id, // comes from verifyToken
+    // });
 
     const savedListing = await newListing.save();
     res.status(201).json(savedListing);
@@ -125,9 +139,21 @@ export const updateListing = async (req, res, next) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    const updated = await Listing.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const { images, ...rest } = req.body;
+
+    const cleanImages = Array.isArray(images)
+      ? images.filter((img) => img.url && img.public_id)
+      : [];
+
+    const updated = await Listing.findByIdAndUpdate(
+      req.params.id,
+      { ...rest, images: cleanImages },
+      { new: true }
+    );
+
+    // const updated = await Listing.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    // });
 
     res.status(200).json(updated);
   } catch (error) {
@@ -145,8 +171,10 @@ export const deleteListing = async (req, res, next) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
+    await Booking.deleteMany({ listing: listing._id });
     await Listing.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Listing deleted" });
+
+    res.status(200).json({ message: "Listing and related bookings deleted." });
   } catch (error) {
     next(error);
   }
