@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchListingById } from "../slices/listingSlice";
+import MapView from "../components/MapView";
 
 const ListingDetails = () => {
   const { id } = useParams();
@@ -56,7 +57,8 @@ const ListingDetails = () => {
       <p className="text-gray-600 mb-2">{selectedListing.description}</p>
       <p className="text-gray-700 mb-1">
         <strong>
-          <i class="fa-solid fa-location-dot mr-2 text-blue-600"></i>Location:
+          <i className="fa-solid fa-location-dot mr-2 text-blue-600"></i>
+          Location:
         </strong>
         {selectedListing.location}
       </p>
@@ -75,6 +77,19 @@ const ListingDetails = () => {
               className="w-full h-60 object-cover rounded-lg"
             />
           ))}
+        </div>
+      )}
+
+      {selectedListing.latitude && selectedListing.longitude && (
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <i className="fa-solid fa-map-location-dot mr-2 text-blue-600"></i>
+            View on Map
+          </h3>
+          <MapView
+            lat={selectedListing.latitude}
+            lng={selectedListing.longitude}
+          />
         </div>
       )}
 
