@@ -15,11 +15,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ["https://hoppscotch.io", "http://localhost:5173"];
+const allowedOrigins = [
+  "https://stayfinder-frontend-zz1j.onrender.com",
+  "http://localhost:5173",
+  "https://hoppscotch.io",
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
+    // Allow requests with no origin (like curl, Postman)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
@@ -32,7 +36,8 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => res.send("API is working"));
