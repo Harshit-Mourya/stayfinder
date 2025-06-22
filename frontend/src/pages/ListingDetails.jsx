@@ -68,13 +68,13 @@ const ListingDetails = () => {
       </p>
 
       {selectedListing.images?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mb-6">
           {selectedListing.images.map((img, index) => (
             <img
               key={index}
               src={img.url}
               alt={`Listing image ${index + 1}`}
-              className="w-full h-60 object-cover rounded-lg"
+              className="w-full max-h-96 object-contain rounded-lg bg-white"
             />
           ))}
         </div>

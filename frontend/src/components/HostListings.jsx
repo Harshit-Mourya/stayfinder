@@ -61,7 +61,7 @@ const HostListings = () => {
   }
 
   return (
-    <div className="px-4 md:px-8 mt-6">
+    <div className="px-4 md:px-8 mt-6 mx-10">
       <h2 className="text-2xl font-semibold mb-6 text-blue-600 text-center">
         Your Listings
       </h2>

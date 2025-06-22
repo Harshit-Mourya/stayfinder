@@ -37,12 +37,15 @@ const UserDropdown = ({ user }) => {
         className=" font-medium text-gray-700 hover:text-blue-600 sm:text-lg text-base lg:px-4"
       >
         <i className="fa-solid fa-circle-user mr-2"></i>
-        {user?.name || "User"}
+        {user?.name?.split(" ")[0] || "User"}
       </button>
 
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md z-50">
-          <div className="px-4 py-2 text-s text-gray-500 border-b">
+          <div
+            className="px-4 py-2 text-s text-gray-500 border-b max-w-[160px] truncate"
+            title={user?.email}
+          >
             {user?.email}
           </div>
 

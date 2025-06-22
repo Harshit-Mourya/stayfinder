@@ -4,6 +4,7 @@ import { fetchListingById } from "../slices/listingSlice";
 import useTotalPrice from "../hooks/useTotalPrice";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import { clearBookingStatus } from "../slices/bookingSlice.js";
 
 const BookingForm = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,8 @@ const BookingForm = () => {
 
     if (isProcessing) return;
     setIsProcessing(true);
+
+    dispatch(clearBookingStatus());
 
     try {
       if (new Date(checkIn) >= new Date(checkOut)) {

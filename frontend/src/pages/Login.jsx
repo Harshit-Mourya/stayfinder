@@ -42,7 +42,7 @@ const Login = () => {
   }, [error, dispatch]);
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] px-4">
+    <div className="flex justify-center items-center min-h-[90vh] px-4">
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Login to StayFinder
