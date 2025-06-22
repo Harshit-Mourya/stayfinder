@@ -16,8 +16,13 @@ const Navbar = () => {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <Link
           to="/"
-          className="text-lg sm:text-2xl font-semibold text-blue-600 whitespace-nowrap"
+          className="flex items-center gap-1  text-lg sm:text-2xl font-semibold text-blue-600 whitespace-nowrap"
         >
+          <img
+            src="/stayfinderlogo.png"
+            alt="Logo"
+            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+          />
           StayFinder
         </Link>
 
