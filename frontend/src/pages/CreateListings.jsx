@@ -116,18 +116,6 @@ const CreateListing = () => {
             disabled={loading || isSubmitting}
           />
 
-          {/* <input
-            type="text"
-            disabled={loading || isSubmitting}
-            name="images"
-            placeholder="Image URL"
-            value={formData.images}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, images: [e.target.value] }))
-            }
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          /> */}
-
           <button
             type="submit"
             disabled={loading || isSubmitting}

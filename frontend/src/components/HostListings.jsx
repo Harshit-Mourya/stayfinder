@@ -61,12 +61,12 @@ const HostListings = () => {
           &nbsp;to create one.
         </div>
       ) : (
-        <div className="px-4 md:px-8 mt-6 mx-10">
+        <div className="px-4 md:px-8 mt-6">
           <h2 className="text-2xl font-semibold mb-6 text-blue-600 text-center">
             Your Listings
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:mx-10">
             {listings.map((listing) => (
               <div
                 key={listing._id}

@@ -28,7 +28,8 @@ const Listings = () => {
     return (
       <div className="w-full text-center my-5">
         <p className="text-xl font-semibold text-gray-700 animate-pulse">
-          <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading listing...
+          <i className="fa-solid fa-spinner fa-spin mr-2"></i>Loading
+          listings...
         </p>
       </div>
     );
