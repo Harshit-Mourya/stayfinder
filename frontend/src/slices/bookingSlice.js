@@ -47,7 +47,8 @@ export const fetchHostBookings = createAsyncThunk(
 const bookingSlice = createSlice({
   name: "bookings",
   initialState: {
-    bookings: [],
+    userBookings: [],
+    hostBookings: [],
     loading: false,
     error: null,
     success: false,
@@ -68,7 +69,7 @@ const bookingSlice = createSlice({
       .addCase(createBooking.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        state.bookings.push(action.payload);
+        state.userBookings.push(action.payload); // Push to userBookings
       })
       .addCase(createBooking.rejected, (state, action) => {
         state.loading = false;
@@ -81,7 +82,7 @@ const bookingSlice = createSlice({
       })
       .addCase(fetchUserBookings.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings = action.payload;
+        state.userBookings = action.payload;
       })
       .addCase(fetchUserBookings.rejected, (state, action) => {
         state.loading = false;
@@ -94,7 +95,7 @@ const bookingSlice = createSlice({
       })
       .addCase(fetchHostBookings.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings = action.payload;
+        state.hostBookings = action.payload;
       })
       .addCase(fetchHostBookings.rejected, (state, action) => {
         state.loading = false;
