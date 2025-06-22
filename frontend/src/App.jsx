@@ -16,61 +16,64 @@ import EditListing from "./pages/EditListing";
 import Unauthorized from "./pages/Unauthorized";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-200 overflow-y-scroll scrollbar-hide h-screen">
+    <div className="flex flex-col bg-gray-200 overflow-y-scroll scrollbar-hide  h-screen">
       <Navbar />
-
       <ToastContainer position="top-right" autoClose={3000} />
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/listing/:id" element={<ListingDetails />} />
-        <Route
-          path="/createlisting"
-          element={
-            <PrivateRoute>
-              <CreateListing />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/book/:id"
-          element={
-            <PrivateRoute>
-              <BookingForm />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/editlisting/:id"
-          element={
-            <PrivateRoute requiredRole="host">
-              <EditListing />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route
-          path="/payment"
-          element={
-            <PrivateRoute>
-              <Payment />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+      <div className="flex-grow">
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/listing/:id" element={<ListingDetails />} />
+          <Route
+            path="/createlisting"
+            element={
+              <PrivateRoute>
+                <CreateListing />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/book/:id"
+            element={
+              <PrivateRoute>
+                <BookingForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/editlisting/:id"
+            element={
+              <PrivateRoute requiredRole="host">
+                <EditListing />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route
+            path="/payment"
+            element={
+              <PrivateRoute>
+                <Payment />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 }
