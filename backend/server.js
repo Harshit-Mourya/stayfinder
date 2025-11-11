@@ -56,9 +56,24 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB error:", err));
+// mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((err) => console.error("MongoDB error:", err));
 
-app.listen(PORT, () => console.log(`Server listening to port ${PORT}...`));
+// app.listen(PORT, () => console.log(`Server listening to port ${PORT}...`));
+
+mongoose
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    connectTimeoutMS: 10000,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`));
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });
